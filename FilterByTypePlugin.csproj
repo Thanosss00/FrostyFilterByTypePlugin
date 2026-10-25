@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+	<PropertyGroup>
+		<Configurations>Developer - Debug;Release - Alpha;Release - Beta;Release - Final</Configurations>
+		<Platforms>x64</Platforms>
+		<TargetFramework>net48</TargetFramework>
+		<AssemblyTitle>FrostyFilterByType</AssemblyTitle>
+		<Product>FrostyFilterByType</Product>
+		<Copyright>Copyright © 2026</Copyright>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+ 
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Developer - Debug|x64' ">
+		<DebugSymbols>true</DebugSymbols>
+		<OutputPath>bin\Developer\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+ 
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release - Alpha|x64' ">
+		<OutputPath>bin\Release\Alpha\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+ 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release - Beta|x64'">
+		<OutputPath>bin\Release\Beta\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+ 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release - Final|x64'">
+		<OutputPath>bin\Release\Final\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+ 
+	<ItemGroup>
+	  <EmbeddedResource Include="ThirdParty\0Harmony.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\FrostyControls\FrostyControls.csproj">
+			<Private>false</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\..\FrostyHash\FrostyHash.vcxproj">
+			<Private>false</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\..\FrostyPlugin\FrostyCore.csproj">
+			<Private>false</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\..\FrostySdk\FrostySdk.csproj">
+			<Private>false</Private>
+		</ProjectReference>
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="System.Xaml" />
+		<Reference Include="WindowsBase" />
+		<PackageReference Include="Lib.Harmony" Version="2.4.2" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy /Y &quot;$(TargetPath)&quot; &quot;$(SolutionDir)$(OutDir)Plugins\&quot;" />
+		<Exec Command="xcopy /Y &quot;$(ProjectDir)ThirdParty\0Harmony.dll&quot; &quot;$(SolutionDir)$(OutDir)Plugins\&quot;" />
+	</Target>
+</Project>
